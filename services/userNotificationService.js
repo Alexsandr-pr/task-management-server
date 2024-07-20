@@ -13,12 +13,9 @@ class UserNotificationServise {
     }
 
     async getNotification(id) {
-        try {
-            
-            return await UserNotifications.findOne({userId: id});
-        }   catch(e) {
-            console.log(e)
-        }
+        
+        return await UserNotifications.findOne({userId: id});
+        
     }
 
     async change(id, data) {

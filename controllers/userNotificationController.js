@@ -11,7 +11,8 @@ class UserNotificationsController {
     }
 
     async getNotification(req, res) {
-        const {id} = req.body;
+        
+        const {id} = req.params;
         const data = await UserNotifications.getNotification(id);
         return res.json(data);
     }

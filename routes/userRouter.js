@@ -13,4 +13,12 @@ router.get("/logout", userController.logout);
 router.get("/activate/:link", userController.activate);
 router.get("/refresh", userController.refresh);
 
+router.post("/forgot", userController.forgotPassword);
+router.post("/password", 
+    body("email").isEmail(),
+    body("password").isLength({min:3, max:32}),
+    userController.changePasswordForgot);
+router.get("/",  userController.users);
+router.post("/password/change",  userController.changePassword);
+
 module.exports = router;

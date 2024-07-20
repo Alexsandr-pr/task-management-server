@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const userService = require('../services/userService');
 const {validationResult} = require("express-validator");
 
@@ -70,61 +71,51 @@ class UserController {
         }      
     }
 
-    async getUsers(req, res) {
-        try {
-            
-        } catch(e) {
-            
-        }
+    async users(req, res) {
+        const userData = await User.find();
+        return res.json(userData)
     }
 
-    async forgotPassword(req, res) {
+    async forgotPassword(req, res, next) {
         try {
+            const {email} = req.body;
             
+            const code = await userService.forgotPassword(email);
+            return res.json(code)
         } catch(e) {
             next(e)
         }
     }
 
-    async changePasswordForgot(req, res) {
+    async changePasswordForgot(req, res, next) {
+        
         try {
-            
+            const {email, password} = req.body;
+        
+            await userService.changePasswordForgot(email, password);
+
+            return res.json({message: "Вы поменяли пароль"});
         } catch(e) {
             
         }
+
+        
     }
 
-    async changePassword(req, res) {
+    async changePassword(req, res, next) {
         try {
+            const {password, email, newPassword} = req.body;
             
+            const userData = await userService.changePassword(password, newPassword, email);
+
+            res.cookie("refreshToken", userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+            return res.json(userData);
+
         } catch(e) {
-            
+            next(e)
         }
     }
 
-    async addImage(req, res) {
-        try {
-           
-        } catch(e) {
-            
-        }
-    }
-
-    async deleteAvatar(req, res, ) {
-        try {
-            
-        } catch(e) {
-            
-        }
-    }
-
-    async deleteUser(req, res) {
-        try {
-
-        }catch(e) {
-
-        }
-    }
 }
 
 module.exports = new UserController();

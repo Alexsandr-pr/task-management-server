@@ -13,6 +13,8 @@ const userNotifications = require("../controllers/userNotificationController");
 const userSpecializationsController = require("../controllers/userSpecializationsController");
 const userLocalizationController = require("../controllers/userLocalizationController");
 const ApiError = require("../exceptions/apiError")
+const service = require("./service")
+
 
 class UserService {
 
@@ -122,7 +124,7 @@ class UserService {
                 throw  ApiError.BadRequest('Пользователь не был найден, проверьте правильность ввода вашего email')
             }
 
-            const code = await serviceAll.createCode();
+            const code = await service.createCode();
 
             await mailService.sendPasswordForgot(email, code);
 
